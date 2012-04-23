@@ -31,7 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -374,8 +374,8 @@ public class ShellImpl extends AbstractShellPrompt implements Shell
          this.registerKeyListener(ignoreEOF);
 
       /*
-       * Do this last so that we don't fire off plugin events before the shell has booted
-       * (Causing all kinds of wonderful issues)
+       * Do this last so that we don't fire off plugin events before the shell has booted (Causing all kinds of
+       * wonderful issues)
        */
       projectContext.setCurrentResource(resourceFactory.getResourceFrom(event.getWorkingDirectory()));
       environment.setProperty("CWD", getCurrentDirectory().getFullyQualifiedName());
@@ -411,7 +411,8 @@ public class ShellImpl extends AbstractShellPrompt implements Shell
             historyOutstream.flush();
          }
          catch (IOException e)
-         {}
+         {
+         }
       }
    }
 
@@ -456,7 +457,8 @@ public class ShellImpl extends AbstractShellPrompt implements Shell
                historyOutstream.close();
             }
             catch (Exception e)
-            {}
+            {
+            }
          }
       });
    }
@@ -519,7 +521,8 @@ public class ShellImpl extends AbstractShellPrompt implements Shell
    private void initReaderAndStreams() throws IOException
    {
       boolean noInitMode = isNoInitMode();
-      if ((_redirectedStream == null) && noInitMode) {
+      if ((_redirectedStream == null) && noInitMode)
+      {
          return;
       }
 
@@ -544,18 +547,9 @@ public class ShellImpl extends AbstractShellPrompt implements Shell
          TerminalFactory.configure(TerminalFactory.Type.WINDOWS);
          terminal = TerminalFactory.get();
 
-         final OutputStreamWriter writer = new OutputStreamWriter(ansiOut, System.getProperty(
-                  "jline.WindowsTerminal.output.encoding", System.getProperty("file.encoding")));
-
-         outputStream = new OutputStream()
-         {
-            @Override
-            public void write(final int b) throws IOException
-            {
-               writer.write(b);
-               writer.flush();
-            }
-         };
+         final String encoding = System.getProperty(
+                  "jline.WindowsTerminal.output.encoding", System.getProperty("file.encoding"));
+         outputStream = new PrintStream(ansiOut, true, encoding);
       }
       else
       {
