@@ -12,7 +12,6 @@
       <module name="javax.interceptor.api" />
       
       <module name="org.javassist" export="true" />
-      <module name="org.jboss.interceptor" export="true" />
       <module name="org.jboss.weld.core" export="true" />
       
       <module name="org.jboss.forge.parser.java.api" export="true" services="export">

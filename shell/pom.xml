@@ -33,6 +33,10 @@
 
    <dependencies>
       <dependency>
+         <groupId>javassist</groupId>
+         <artifactId>javassist</artifactId>
+      </dependency>
+      <dependency>
          <groupId>org.jboss.forge</groupId>
          <artifactId>forge-project-model-maven</artifactId>
       </dependency>
@@ -104,10 +108,6 @@
          <artifactId>jboss-logmanager</artifactId>
       </dependency>
       <dependency>
-         <groupId>org.sonatype.jline</groupId>
-         <artifactId>jline</artifactId>
-      </dependency>
-      <dependency>
          <groupId>org.fusesource.jansi</groupId> 
          <artifactId>jansi</artifactId>
       </dependency>
@@ -168,31 +168,6 @@
          <scope>test</scope>
       </dependency>
    </dependencies>
-
-   <repositories>
-      <repository>
-         <id>codehaus</id>
-         <url>http://snapshots.repository.codehaus.org/</url>
-         <layout>default</layout>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-         </snapshots>
-      </repository>
-      <repository>
-         <id>sonatype</id>
-         <url>https://repository.sonatype.org/</url>
-         <layout>default</layout>
-         <releases>
-            <enabled>false</enabled>
-         </releases>
-         <snapshots>
-            <enabled>true</enabled>
-         </snapshots>
-      </repository>
-   </repositories>
 
    <build>
       <plugins>

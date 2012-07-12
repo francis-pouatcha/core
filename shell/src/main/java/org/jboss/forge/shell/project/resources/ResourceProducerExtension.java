@@ -44,27 +44,33 @@ public class ResourceProducerExtension implements Extension
 {
    private final Map<Class<?>, AnnotatedType<?>> typeOverrides = new HashMap<Class<?>, AnnotatedType<?>>();
 
+   /**
+    * Create a class to lazy load the builder, so it is not created unless needed. (Performance Fix) -- Mike Brock
+    * (h/t to Stuart Douglas)
+    */
+   private class BuilderHolder<T>
+   {
+      private AnnotatedTypeBuilder<T> builder;
+      private ProcessAnnotatedType<T> event;
+      
+      public BuilderHolder(AnnotatedTypeBuilder<T> builder, ProcessAnnotatedType<T> event) {
+         this.builder = builder;
+         this.event = event;
+      }
+      
+      public AnnotatedTypeBuilder<T> getBuilder()
+      {
+         if (builder == null) {
+            builder = new AnnotatedTypeBuilder<T>();
+            builder.readFromType(event.getAnnotatedType());
+         }
+         return builder;
+      }
+   }
    public <T> void processAnnotatedType(@Observes final ProcessAnnotatedType<T> event)
    {
-      /**
-       * Create a class to lazy load the builder, so it is not created unless needed. (Performance Fix) -- Mike Brock
-       * (h/t to Stuart Douglas)
-       */
-      class BuilderHolder
-      {
-         private AnnotatedTypeBuilder<T> builder;
 
-         public AnnotatedTypeBuilder<T> getBuilder()
-         {
-            if (builder == null) {
-               builder = new AnnotatedTypeBuilder<T>();
-               builder.readFromType(event.getAnnotatedType());
-            }
-            return builder;
-         }
-      }
-
-      final BuilderHolder builderHolder = new BuilderHolder();
+      final BuilderHolder<T> builderHolder = new BuilderHolder<T>(null,event);
 
       boolean modifiedType = false;
 

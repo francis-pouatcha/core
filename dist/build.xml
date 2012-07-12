@@ -69,10 +69,10 @@
 			<maven-resource group="com.google.guava" artifact="guava" />
 		</module-def>
 
-        <module-def name="com.sun.xml.bind">
-            <maven-resource group="com.sun.xml.bind" artifact="jaxb-impl"/>
-            <maven-resource group="com.sun.xml.bind" artifact="jaxb-xjc"/>
-        </module-def>
+		<module-def name="com.sun.xml.bind">
+			<maven-resource group="com.sun.xml.bind" artifact="jaxb-impl" />
+			<maven-resource group="com.sun.xml.bind" artifact="jaxb-xjc" />
+		</module-def>
 
 		<module-def name="javaee.api" />
 
@@ -222,7 +222,7 @@
 		<module-def name="org.apache.commons.codec">
 			<maven-resource group="commons-codec" artifact="commons-codec" />
 		</module-def>
-		
+
 		<module-def name="org.apache.commons.logging" />
 
 		<module-def name="org.apache.httpcomponents">
@@ -251,10 +251,11 @@
 			<maven-resource group="javassist" artifact="javassist" />
 		</module-def>
 
+
 		<!-- BEGIN Forge Modules -->
 		<module-def name="org.jboss.forge">
 			<maven-resource group="org.jboss.forge" artifact="forge-shell" />
-			
+
 			<!-- TODO make this a separate auto-install plugin -->
 			<maven-resource group="org.jboss.forge" artifact="forge-dev-plugins" />
 		</module-def>
@@ -281,7 +282,7 @@
 		<module-def name="org.jboss.forge.maven.api">
 			<maven-resource group="org.jboss.forge" artifact="forge-maven-api" />
 
-			
+
 			<!-- TODO this needs to be pulled into a module -->
 			<maven-resource group="commons-cli" artifact="commons-cli" />
 			<maven-resource group="org.apache.maven" artifact="maven-aether-provider" />
@@ -334,11 +335,11 @@
 		<module-def name="org.jboss.forge.parser.xml">
 			<maven-resource group="org.jboss.forge" artifact="forge-parser-xml" />
 		</module-def>
-		
+
 		<module-def name="org.jboss.forge.scaffold.api">
 			<maven-resource group="org.jboss.forge" artifact="forge-scaffold-api" />
 		</module-def>
-		
+
 		<module-def name="org.jboss.forge.scaffold.impl">
 			<maven-resource group="org.jboss.forge" artifact="forge-scaffold-plugins" />
 			<maven-resource group="org.jboss.forge" artifact="forge-scaffold-faces" />
@@ -350,21 +351,13 @@
 		</module-def>
 		<!-- END Forge Modules -->
 
-		<module-def name="org.jboss.interceptor">
-			<maven-resource group="org.jboss.interceptor" artifact="jboss-interceptor-core" />
-		</module-def>
-
-		<module-def name="org.jboss.interceptor.spi">
-			<maven-resource group="org.jboss.interceptor" artifact="jboss-interceptor-spi" />
-		</module-def>
-
 		<module-def name="javax.interceptor.api">
 			<maven-resource group="org.jboss.spec.javax.interceptor" artifact="jboss-interceptors-api_1.1_spec" />
 		</module-def>
-        
-        <module-def name="org.jboss.logging">
-            <maven-resource group="org.jboss.logging" artifact="jboss-logging"/>
-        </module-def>
+
+		<module-def name="org.jboss.logging">
+			<maven-resource group="org.jboss.logging" artifact="jboss-logging" />
+		</module-def>
 
 		<module-def name="org.jboss.logmanager">
 			<maven-resource group="org.jboss.logmanager" artifact="jboss-logmanager" />
@@ -373,7 +366,7 @@
 		<module-def name="org.jboss.modules" />
 
 		<module-def name="org.jboss.shrinkwrap.descriptors">
-			<maven-resource group="org.jboss.shrinkwrap.descriptors" artifact="shrinkwrap-descriptors-api" />
+			<maven-resource group="org.jboss.shrinkwrap.descriptors" artifact="shrinkwrap-descriptors-api-base" />
 			<maven-resource group="org.jboss.shrinkwrap.descriptors" artifact="shrinkwrap-descriptors-impl" />
 			<maven-resource group="org.jboss.shrinkwrap.descriptors" artifact="shrinkwrap-descriptors-spi" />
 		</module-def>
@@ -391,6 +384,11 @@
 		<module-def name="org.jboss.weld.core">
 			<maven-resource group="org.jboss.weld" artifact="weld-core" />
 			<maven-resource group="org.jboss.weld.se" artifact="weld-se-core" />
+			<maven-resource group="org.jboss.classfilewriter" artifact="jboss-classfilewriter" />
+		</module-def>
+		
+		<module-def name="org.jboss.classfilewriter">
+			<maven-resource group="org.jboss.classfilewriter" artifact="jboss-classfilewriter" />
 		</module-def>
 
 		<module-def name="org.jboss.weld.api">
@@ -417,9 +415,9 @@
 			<maven-resource group="org.slf4j" artifact="slf4j-log4j12" />
 		</module-def>
 
-        <module-def name="org.slf4j.jcl-over-slf4j">
-            <maven-resource group="org.slf4j" artifact="jcl-over-slf4j"/>
-        </module-def>
+		<module-def name="org.slf4j.jcl-over-slf4j">
+			<maven-resource group="org.slf4j" artifact="jcl-over-slf4j" />
+		</module-def>
 
 		<module-def name="org.yaml">
 			<maven-resource group="org.yaml" artifact="snakeyaml" />

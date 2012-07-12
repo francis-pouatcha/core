@@ -136,7 +136,7 @@
          <groupId>javassist</groupId>
          <artifactId>javassist</artifactId>
       </dependency>
-
+      
       <dependency>
          <groupId>javax.validation</groupId>
          <artifactId>validation-api</artifactId>
@@ -228,16 +228,6 @@
       </dependency>
 
       <dependency>
-         <groupId>org.jboss.interceptor</groupId>
-         <artifactId>jboss-interceptor-core</artifactId>
-      </dependency>
-
-      <dependency>
-         <groupId>org.jboss.interceptor</groupId>
-         <artifactId>jboss-interceptor-spi</artifactId>
-      </dependency>
-
-      <dependency>
          <groupId>org.jboss.logging</groupId>
          <artifactId>jboss-logging</artifactId>
       </dependency>
@@ -250,6 +240,21 @@
       <dependency>
          <groupId>org.jboss.slf4j</groupId>
          <artifactId>slf4j-jboss-logmanager</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+         <artifactId>shrinkwrap-descriptors-api-base</artifactId>
+      </dependency>
+      
+      <dependency>
+         <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+         <artifactId>shrinkwrap-descriptors-impl</artifactId>
+      </dependency>
+
+      <dependency>
+         <groupId>org.jboss.shrinkwrap.descriptors</groupId>
+         <artifactId>shrinkwrap-descriptors-spi</artifactId>
       </dependency>
 
       <dependency>

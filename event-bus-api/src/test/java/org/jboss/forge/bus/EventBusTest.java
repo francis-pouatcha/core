@@ -25,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.lang.annotation.Annotation;
 
+import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
@@ -54,7 +55,7 @@ public class EventBusTest
                .addClass(MockEventObserver.class)
                .addClass(EventBus.class)
                .addClass(BusEvent.class)
-               .addAsManifestResource("META-INF/services/javax.enterprise.inject.spi.Extension")
+               .addAsServiceProvider(Extension.class, ObserverCaptureExtension.class)
                .addAsManifestResource(new ByteArrayAsset("<beans/>".getBytes()), ArchivePaths.create("beans.xml"));
    }
 
