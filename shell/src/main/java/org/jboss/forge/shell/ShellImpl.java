@@ -95,7 +95,6 @@ import org.jboss.forge.shell.util.GeneralUtils;
 import org.jboss.forge.shell.util.JavaPathspecParser;
 import org.jboss.forge.shell.util.OSUtils;
 import org.jboss.forge.shell.util.ResourceUtil;
-import org.jboss.weld.environment.se.bindings.Parameters;
 import org.mvel2.ConversionHandler;
 
 /**
@@ -128,9 +127,9 @@ public class ShellImpl extends AbstractShellPrompt implements Shell
    public static final String FORGE_CONFIG_FILE = "config";
    public static final String OFFLINE_FLAG = "OFFLINE";
 
-   @Inject
-   @Parameters
-   private List<String> parameters;
+//   @Inject
+//   @Parameters
+   private List<String> parameters = new ArrayList<String>();
 
    @Inject
    private BeanManager manager;

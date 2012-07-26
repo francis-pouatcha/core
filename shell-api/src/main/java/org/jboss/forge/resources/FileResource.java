@@ -73,7 +73,7 @@ public abstract class FileResource<T extends FileResource<?>> extends AbstractRe
    @Override
    public String getName()
    {
-      return file.getName();
+      return file == null ? "null" : file.getName();
    }
 
    /**
@@ -115,7 +115,7 @@ public abstract class FileResource<T extends FileResource<?>> extends AbstractRe
    @Override
    public Resource<?> getParent()
    {
-      return file.getParentFile() != null? new DirectoryResource(resourceFactory, file.getParentFile()) : null;
+      return file != null && file.getParentFile() != null? new DirectoryResource(resourceFactory, file.getParentFile()) : null;
    }
 
    @Override

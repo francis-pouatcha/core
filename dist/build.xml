@@ -250,6 +250,21 @@
 		<module-def name="org.javassist">
 			<maven-resource group="javassist" artifact="javassist" />
 		</module-def>
+		
+		
+		<module-def name="org.apache.deltaspike.cdictrl">
+			<maven-resource group="org.apache.deltaspike.cdictrl" artifact="deltaspike-cdictrl-api" />
+			<maven-resource group="org.apache.deltaspike.cdictrl" artifact="deltaspike-cdictrl-owb" />
+		</module-def>
+		
+		<module-def name="org.apache.openwebbeans">
+			<maven-resource group="org.apache.openwebbeans" artifact="openwebbeans-impl" />
+			<maven-resource group="org.apache.openwebbeans" artifact="openwebbeans-spi" />
+		</module-def>
+		
+		<module-def name="net.sf.scannotation">
+			<maven-resource group="net.sf.scannotation" artifact="scannotation" />
+		</module-def>
 
 		<!-- BEGIN Forge Modules -->
 		<module-def name="org.jboss.forge">

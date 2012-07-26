@@ -33,6 +33,20 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
 
+import org.apache.deltaspike.cdise.api.CdiContainer;
+import org.apache.deltaspike.cdise.api.CdiContainerLoader;
+import org.apache.webbeans.config.WebBeansContext;
+import org.apache.webbeans.corespi.se.DefaultContextsService;
+import org.apache.webbeans.corespi.se.DefaultJndiService;
+import org.apache.webbeans.corespi.se.DefaultScannerService;
+import org.apache.webbeans.corespi.security.SimpleSecurityService;
+import org.apache.webbeans.lifecycle.StandaloneLifeCycle;
+import org.apache.webbeans.spi.ContainerLifecycle;
+import org.apache.webbeans.spi.ContextsService;
+import org.apache.webbeans.spi.JNDIService;
+import org.apache.webbeans.spi.ScannerService;
+import org.apache.webbeans.spi.SecurityService;
+import org.apache.webbeans.util.WebBeansUtil;
 import org.jboss.forge.shell.InstalledPluginRegistry.PluginEntry;
 import org.jboss.forge.shell.events.AcceptUserInput;
 import org.jboss.forge.shell.events.PostStartup;
@@ -43,8 +57,6 @@ import org.jboss.forge.shell.events.Startup;
 import org.jboss.modules.Module;
 import org.jboss.modules.ModuleIdentifier;
 import org.jboss.modules.ModuleLoader;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
@@ -54,12 +66,12 @@ import org.jboss.weld.environment.se.WeldContainer;
  */
 public class Bootstrap
 {
-   
+
    public static final String PROP_PLUGIN_DIR = "org.jboss.forge.pluginDir";
    public static final String PROP_EVALUATE = "org.jboss.forge.evaluate";
    private static final String ARG_PLUGIN_DIR = "-pluginDir";
    private static final String ARG_EVALUATE = "-e";
-   
+
    private static boolean pluginSystemEnabled = !Boolean.getBoolean("forge.plugins.disable");
    private static Thread currentShell = null;
    private static boolean restartRequested = false;
@@ -75,24 +87,31 @@ public class Bootstrap
       readArguments(args);
       init();
    }
-   
-   private static void readArguments(String[] args) {
+
+   private static void readArguments(String[] args)
+   {
       readPluginDirArgument(args);
       readEvaluateArgument(args);
    }
-   
-   private static void readPluginDirArgument(String[] args) {
-      for (int i = 0; i < args.length; i++) {
-         if (ARG_PLUGIN_DIR.equals(args[i]) && i + 1 < args.length) {
+
+   private static void readPluginDirArgument(String[] args)
+   {
+      for (int i = 0; i < args.length; i++)
+      {
+         if (ARG_PLUGIN_DIR.equals(args[i]) && i + 1 < args.length)
+         {
             System.setProperty(PROP_PLUGIN_DIR, args[i + 1]);
             return;
          }
       }
    }
-   
-   private static void readEvaluateArgument(String[] args) {
-      for (int i = 0; i < args.length; i++) {
-         if (ARG_EVALUATE.equals(args[i]) && i + 1 < args.length) {
+
+   private static void readEvaluateArgument(String[] args)
+   {
+      for (int i = 0; i < args.length; i++)
+      {
+         if (ARG_EVALUATE.equals(args[i]) && i + 1 < args.length)
+         {
             System.setProperty(PROP_EVALUATE, args[i + 1]);
             return;
          }
@@ -113,26 +132,14 @@ public class Bootstrap
                boolean restarting = restartRequested;
                restartRequested = false;
 
-               Weld weld = new ModularWeld();
                BeanManager manager = null;
-
-               // FIXME this plugin loading scheme causes classloading issues w/weld because weld cannot load classes
-               // from its own classloaders before plugins are loaded and pollute the classpath.
-               // We can work around it by loading weld before we load plugins, then restarting weld, but this is SLOW.
-               try {
-                  WeldContainer container = weld.initialize();
-                  manager = container.getBeanManager();
-                  weld.shutdown();
-               }
-               catch (Exception e) {}
-
-               try {
+               try
+               {
                   // TODO verify plugin API versions. only activate compatible plugins.
                   loadPlugins();
-                  WeldContainer container = weld.initialize();
-                  manager = container.getBeanManager();
                }
-               catch (Throwable e) {
+               catch (Throwable e)
+               {
                   // Boot up with external plugins disabled.
                   System.out
                            .println("Plugin system disabled due to failure while loading one or more plugins; try removing offending plugins with \"forge remove-plugin <TAB>\".");
@@ -141,15 +148,27 @@ public class Bootstrap
                   Thread.currentThread().setContextClassLoader(mainClassLoader);
 
                   initLogging();
-                  WeldContainer container = weld.initialize();
-                  manager = container.getBeanManager();
                }
+               WebBeansContext.currentInstance().registerService(JNDIService.class, new DefaultJndiService());
+               WebBeansContext.currentInstance().registerService(ScannerService.class, new DefaultScannerService());
+               WebBeansContext.currentInstance().registerService(SecurityService.class, new SimpleSecurityService());
+               
+               WebBeansContext.currentInstance().registerService(ContextsService.class, new DefaultContextsService());
+               WebBeansContext.currentInstance().registerService(ContainerLifecycle.class, new StandaloneLifeCycle());
+               
+               // this will give you a CdiContainer for Weld or OWB, depending on the jar you added
+               CdiContainer cdiContainer = CdiContainerLoader.getCdiContainer();
 
+               // now we gonna boot the CDI container. This will trigger the classpath scan, etc
+               cdiContainer.boot();
+
+               // and finally we like to start all built-in contexts
+
+               manager = cdiContainer.getBeanManager();
                manager.fireEvent(new PreStartup());
                manager.fireEvent(new Startup(workingDir, restarting));
                manager.fireEvent(new PostStartup());
                manager.fireEvent(new AcceptUserInput());
-               weld.shutdown();
             }
          });
 
@@ -190,7 +209,7 @@ public class Bootstrap
 
    synchronized private static void loadPlugins()
    {
-      
+
       if (!pluginSystemEnabled)
          return;
 
@@ -203,14 +222,16 @@ public class Bootstrap
 
          List<PluginEntry> toLoad = new ArrayList<InstalledPluginRegistry.PluginEntry>();
 
-         List<PluginEntry> installed = InstalledPluginRegistry.listByAPICompatibleVersion(InstalledPluginRegistry.getRuntimeAPIVersion());
+         List<PluginEntry> installed = InstalledPluginRegistry.listByAPICompatibleVersion(InstalledPluginRegistry
+                  .getRuntimeAPIVersion());
 
          toLoad.addAll(installed);
 
          List<PluginEntry> incompatible = InstalledPluginRegistry.list();
          incompatible.removeAll(installed);
 
-         for (PluginEntry pluginEntry : incompatible) {
+         for (PluginEntry pluginEntry : incompatible)
+         {
             System.out.println("Not loading plugin [" + pluginEntry.getName()
                      + "] because it references Forge API version [" + pluginEntry.getApiVersion()
                      + "] which may not be compatible with my current version [" + Bootstrap.class.getPackage()

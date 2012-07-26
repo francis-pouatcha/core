@@ -125,9 +125,8 @@
          </imports>
       </module>
       
-      <module name="org.jboss.weld.core" services="import" />
-      <module name="org.jboss.weld.spi" services="import" />
-      <module name="org.jboss.weld.api" services="import" />
+      <module name="org.apache.deltaspike.cdictrl" services="import" />
+      <module name="org.apache.openwebbeans" services="import" />
 
       <module name="org.mvel" />
       <module name="org.yaml" />
