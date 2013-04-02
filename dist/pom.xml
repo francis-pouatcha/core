@@ -18,10 +18,6 @@
    <name>JBoss Forge - Distribution Build</name>
    <packaging>pom</packaging>
 
-   <properties>
-      <version.org.jboss.jandex>1.0.3.Final</version.org.jboss.jandex>
-   </properties>
-
    <build>
       <plugins>
          <plugin>
@@ -48,7 +44,7 @@
                <dependency>
                   <groupId>org.jboss</groupId>
                   <artifactId>jandex</artifactId>
-                  <version>${version.org.jboss.jandex}</version>
+                  <version>${jandex.version}</version>
                </dependency>
             </dependencies>
          </plugin>
@@ -81,7 +77,6 @@
       <dependency>
          <groupId>org.jboss</groupId>
          <artifactId>jandex</artifactId>
-         <version>${version.org.jboss.jandex}</version>
       </dependency>
 
       <!-- Build deps go here -->
