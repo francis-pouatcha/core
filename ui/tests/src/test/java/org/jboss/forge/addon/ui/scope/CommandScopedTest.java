@@ -30,8 +30,10 @@ import org.junit.runner.RunWith;
 public class CommandScopedTest
 {
    @Deployment
-   @Dependencies({ @AddonDependency(name = "org.jboss.forge.addon:ui-test-harness"),
-            @AddonDependency(name = "org.jboss.forge.furnace.container:cdi") })
+   @Dependencies({
+                  @AddonDependency(name = "org.jboss.forge.addon:projects"),
+                  @AddonDependency(name = "org.jboss.forge.addon:ui-test-harness"),
+                   @AddonDependency(name = "org.jboss.forge.furnace.container:cdi") })
    public static ForgeArchive getDeployment()
    {
       ForgeArchive archive = ShrinkWrap
@@ -39,6 +41,7 @@ public class CommandScopedTest
                .addClasses(WizardWithScopedObject.class, CommandScopedModel.class)
                .addBeansXML()
                .addAsAddonDependencies(
+                        AddonDependencyEntry.create("org.jboss.forge.addon:projects"),
                         AddonDependencyEntry.create("org.jboss.forge.addon:ui-test-harness"),
                         AddonDependencyEntry.create("org.jboss.forge.furnace.container:cdi"));
 
@@ -50,6 +53,12 @@ public class CommandScopedTest
 
    @Inject
    private WizardTester<WizardWithScopedObject> wizardTester;
+
+   @Test
+   public void testEnabled()
+   {
+      Assert.assertTrue(wizardTester.isEnabled());
+   }
 
    @Test
    public void testCommandScope() throws Exception
